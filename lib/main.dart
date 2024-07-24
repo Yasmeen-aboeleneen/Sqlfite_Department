@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
- 
+import 'package:sqflite_department/Screens/Home/home_screen.dart';
 
 void main() async {
-   
   runApp(const MyApp());
 }
 
@@ -16,6 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SQFLITE',
       theme: ThemeData(),
+      home: HomeScreen(),
     );
   }
 }

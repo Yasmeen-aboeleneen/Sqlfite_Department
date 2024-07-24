@@ -6,9 +6,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       resizeToAvoidBottomInset: false,
-      body: HomeScreenBody(),
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text("SQL"),
+      ),
+      body:const HomeScreenBody(),
     );
   }
 }
