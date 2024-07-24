@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_department/Core/Constants/colors.dart';
 import 'package:sqflite_department/Screens/Home/home_screen_body.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,13 +7,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
+      backgroundColor: kveryWhite,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text("SQL"),
+        centerTitle: true,
+        backgroundColor: kPrimary,
+        title: const Text("Notes",
+            style: TextStyle(
+                fontSize: 25, fontWeight: FontWeight.bold, color: kveryWhite)),
       ),
-      body:const HomeScreenBody(),
+      body: const Padding(
+        padding: EdgeInsets.only(top: 20, left: 10, right: 10),
+        child: HomeScreenBody(),
+      ),
     );
   }
 }

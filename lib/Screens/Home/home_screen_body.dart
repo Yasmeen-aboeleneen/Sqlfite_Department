@@ -10,59 +10,45 @@ class HomeScreenBody extends StatefulWidget {
 
 class _HomeScreenBodyState extends State<HomeScreenBody> {
   Sqldb sqldb = Sqldb();
+
+  Future<List<Map>> readData() async {
+    List<Map> response = await sqldb.readData("SELECT * FROM 'notes'");
+    return response;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-       children: [
-        ElevatedButton(
-            onPressed: () async {
-              int response = await sqldb.insertData(
-                  "INSERT INTO 'notes' ('note') VALUES ('note two')");
-              print("$response");
-            },
-            child: Container(
-              child: Text("Insert Data"),
-              width: 50,
-              height: 20,
-              color: Colors.red,
-            )),
-        ElevatedButton(
-            onPressed: () async {
-              List<Map> response =
-                  await sqldb.readData("SELECT * FROM 'notes'");
-              print("$response");
-            },
-            child: Container(
-              child: Text("Read Data"),
-              width: 50,
-              height: 20,
-              color: Colors.orange,
-            )),
-            ElevatedButton(
-            onPressed: () async {
-              List<Map> response =
-                  await sqldb.readData("SELECT * FROM 'notes'");
-              print("$response");
-            },
-            child: Container(
-              child: Text("Delete Data"),
-              width: 50,
-              height: 20,
-              color: Colors.orange,
-            )),
-            ElevatedButton(
-            onPressed: () async {
-              int response =
-                  await sqldb.updatetData("UPDATE 'notes' SET 'note' = 'note six' WHERE id = 3  ");
-              print("$response");
-            },
-            child: Container(
-              child: Text("update Data"),
-              width: 50,
-              height: 20,
-              color: Colors.orange,
-            ))
+    return Container(
+        child: ListView(
+      children: [
+        MaterialButton(
+          onPressed: () async {
+            await sqldb.deleteMyDatabase();
+          },
+          child:const Text("Delete Data"),
+        ),
+        FutureBuilder(
+          builder: (BuildContext context, AsyncSnapshot<List<Map>> snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: ListTile(
+                          title: Center(
+                              child: Text("${snapshot.data![index]['note']}"))),
+                    );
+                  });
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+          future: readData(),
+        )
       ],
-    );
+    ));
   }
 }

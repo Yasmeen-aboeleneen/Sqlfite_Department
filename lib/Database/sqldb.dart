@@ -17,12 +17,13 @@ class Sqldb {
     String databasePath = await getDatabasesPath();
     String path = join(databasePath, "databasename.db");
     Database myDB = await openDatabase(path,
-        onCreate: _onCreate, version: 1, onUpgrade: _onUpgrade);
+        onCreate: _onCreate, version: 2, onUpgrade: _onUpgrade);
     return myDB;
   }
 
-  _onUpgrade(Database db, int oldVersion, int newVersion) {
+  _onUpgrade(Database db, int oldVersion, int newVersion) async {
     print("onUpgrade for Database============================");
+    await db.execute("ALTER TABLE notes COLUMN color TEXT");
   }
 
   _onCreate(Database db, int version) async {
@@ -31,6 +32,7 @@ class Sqldb {
    CREATE TABLE "notes" (
    
       "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      "title" TEXT NOT NULL,
       "note" TEXT NOT NULL
    )
 
@@ -64,5 +66,11 @@ class Sqldb {
     Database? mydb = await db;
     int response = await mydb!.rawDelete(sql);
     return response;
+  }
+
+  deleteMyDatabase() async {
+    String databasePath = await getDatabasesPath();
+    String path = join(databasePath, "databasename.db");
+    await deleteDatabase(path);
   }
 }
